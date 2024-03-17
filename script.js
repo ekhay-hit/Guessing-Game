@@ -9,9 +9,6 @@
 
 // document.querySelector('.guess').value = 23;
 // console.log(document.querySelector('.guess').value);
-let secretNumber = Number(Math.trunc(Math.random() * 20 + 1));
-let score = 5;
-let highscore = 0;
 
 // Displays Function
 const displayMessag = function (message) {
@@ -21,7 +18,14 @@ const displayScore = function (s) {
   document.querySelector('.score').textContent = s;
 };
 
-document.querySelector('.number').textContent = secretNumber;
+const randomNumber = function () {
+  return Number(Math.trunc(Math.random() * 20 + 1));
+};
+
+let secretNumber = randomNumber();
+let score = 10;
+let highscore = 0;
+
 displayScore(score);
 document.querySelector('.highscore').textContent = highscore;
 
@@ -32,15 +36,16 @@ document.querySelector('.check').addEventListener('click', function () {
   if (!guess) {
     displayMessag('⛔ No number entered');
   } else if (guess !== secretNumber) {
-    if (score > 1) {
+    score--;
+    if (score >= 1) {
       displayMessag(guess > secretNumber ? '📈Too large' : '📉 Too low');
-      score--;
+      //score--;
       displayScore(score);
-    } else {
-      score--;
+    } else if (score === 0) {
+      //score--;
       displayScore(score);
       //document.querySelector('.score').textContent = score;
-      displayMessag('Game Lost 💥💥');
+      displayMessag('Game Lost 💥💥 Again! to try a game');
       document.querySelector('.number').textContent = secretNumber;
       document.querySelector('body').style.backgroundColor = 'red';
     }
@@ -57,13 +62,14 @@ document.querySelector('.check').addEventListener('click', function () {
   }
 });
 document.querySelector('.again').addEventListener('click', function () {
-  score = 5;
+  score = 10;
+  document.querySelector('body').style.backgroundColor = '#222';
   document.querySelector('.number').textContent = '?';
-  secretNumber = Number(Math.trunc(Math.random() * 20 + 1));
+  secretNumber = randomNumber();
   displayMessag('Start guessing...');
   displayScore(score);
   guess = Number((document.querySelector('.guess').value = ''));
-  document.querySelector('body').style.backgroundColor = '#222';
+
   document.querySelector('.number').style.width = '15rem';
 });
 
